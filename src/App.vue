@@ -1,30 +1,22 @@
+<!--
+ * @Author: wangmr mingrui@whut.edu.cn
+ * @Date: 2024-11-19 20:16:16
+ * @LastEditors: wangmr mingrui@whut.edu.cn
+ * @LastEditTime: 2024-11-19 20:35:29
+ * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/App.vue
+ * @Description: 
+ * 2405499352@qq.com
+-->
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+
 </script>
 
 <template>
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    <router-view name="router_main"></router-view>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
+
 </style>
