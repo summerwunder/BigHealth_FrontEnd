@@ -1,7 +1,8 @@
 <script setup>
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
-
+import {useRouter} from 'vue-router'
+const router = useRouter()
 // 定义用户名和密码绑定
 const username = ref('')
 const password = ref('')
@@ -17,6 +18,7 @@ const handleLogin = () => {
   console.log('用户名:', username.value)
   console.log('密码:', password.value)
   console.log('自动登录:', rememberMe.value)
+  router.push("/index")
   // 在这里添加您的登录逻辑
 }
 </script>
