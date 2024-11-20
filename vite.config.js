@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-19 20:00:19
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-19 20:08:06
+ * @LastEditTime: 2024-11-20 17:28:09
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/vite.config.js
  * @Description: 定义了
  * 2405499352@qq.com
@@ -19,7 +19,7 @@ export default defineConfig({
     open: true,
     proxy: {
       '/dev-api': {
-        target: 'http://localhost:8888', //以 /dev-api 开头的请求会被代理到 http://localhost:8888
+        target: 'http://localhost:8000', //以 /dev-api 开头的请求会被代理到 http://localhost:8888
         changeOrigin: true,
         rewrite: (p) => p.replace(/^\/dev-api/, '')
       }

@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-20 08:51:22
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-20 09:01:16
+ * @LastEditTime: 2024-11-20 17:32:52
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/utils/request.js
  * @Description: request的编写
  * 2405499352@qq.com
@@ -28,7 +28,7 @@ request.interceptors.request.use(config=>{
     console.log('请求异常======>',error)
     return Promise.reject(error)
 })
-equest.interceptors.response.use(response=>{
+request.interceptors.response.use(response=>{
     NProgress.done();
     let {code,msg,data}=response.data
     console.log('响应code======>',code,',msg=====>',msg,',data=====>',data)
