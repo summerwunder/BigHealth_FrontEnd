@@ -1,5 +1,7 @@
 <template>
-    <el-menu
+    <div class="sidebar-container">
+        <img src="@/assets/logo.jpg" alt="logo" class="logo"/>
+        <el-menu
         active-text-color="#ffd04b"
         background-color="#545c64"
         class="el-menu-vertical-demo"
@@ -67,7 +69,9 @@
             <el-menu-item index="5-5" @click="handleClick('system', 'logs')">日志管理</el-menu-item>
             <el-menu-item index="5-6" @click="handleClick('system', 'password')">修改密码</el-menu-item>
         </el-sub-menu>
-    </el-menu>
+        </el-menu>
+    </div>
+    
 </template>
 
 <script lang="ts" setup>
@@ -103,5 +107,17 @@ const handleClick = (fpath: string, spath: string) => {
 }
 </script>
 <style scoped>
+.sidebar-container {
+  width: 100%; 
+}
 
+.logo {
+    display: block; 
+  width: 100%; /* 宽度与容器一致 */
+  height: auto; /* 保持图片比例 */
+  margin-bottom: 10px; 
+}
+.el-menu-vertical-demo {
+  width: 100%;
+}
 </style>
