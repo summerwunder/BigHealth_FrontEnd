@@ -12,3 +12,6 @@ export const getUserList=(data)=>{
     return request.get('/user/list',{ params: data
     }
 )}
+export const createUser=(data)=>{
+    return request.post('/user/create',data)
+}

@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-19 21:28:13
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-20 22:36:43
+ * @LastEditTime: 2024-11-20 23:28:26
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/views/user/list.vue
  * @Description:用户列表界面
  * 2405499352@qq.com
@@ -15,7 +15,7 @@
         <el-input v-model="searchForm.username" placeholder="请输入"></el-input>
       </el-form-item>
       <el-form-item label="性别">
-        <el-select v-model="searchForm.gender" placeholder="请选择">
+        <el-select v-model="searchForm.gender" placeholder="请选择" style="width: 200px;">
           <el-option label="男" value="男"></el-option>
           <el-option label="女" value="女"></el-option>
         </el-select>
@@ -73,10 +73,11 @@
     <!-- 分页器 -->
     <el-pagination
       background
-      layout="prev, pager, next, sizes, total"
+      layout="prev,pager, next, sizes, total"
       :current-page="pagination.currentPage"
       :page-size="pagination.pageSize"
       :total="pagination.total"
+      :page-sizes = '[3,5,10,20]'
       @current-change="fetchUsers"
       @size-change="handleSizeChange"
     />
@@ -102,7 +103,7 @@ const users = ref([]);
 const pagination = ref({
   total: 0,
   currentPage: 1,
-  pageSize: 10,
+  pageSize: 5,
 });
 
 
@@ -112,7 +113,7 @@ const fetchUsers = async (page = 1) => {
   const params = {
     page: pagination.value.currentPage,
     size: pagination.value.pageSize,
-   //...searchForm.value, // 传递搜索参数
+    ...searchForm.value, // 传递搜索参数
   };
   getUserList(params).then(
     res =>{
@@ -126,6 +127,7 @@ const fetchUsers = async (page = 1) => {
 
 // 查询按钮点击
 const handleSearch = () => {
+  
   fetchUsers(1); // 查询时重置到第一页
 };
 
