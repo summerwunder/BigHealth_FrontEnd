@@ -108,7 +108,19 @@ const handleClick = (fpath: string, spath: string) => {
 </script>
 <style scoped>
 .sidebar-container {
-  width: 100%; 
+  width: 100%;
+
+}
+
+.el-sub-menu__title {
+  display: flex;
+  justify-content: center; /* 图标和文字水平居中 */
+  align-items: center; /* 图标和文字垂直居中 */
+}
+
+.el-sub-menu__title span {
+  margin-left: 30px; /* 图标和文字之间的间距 */
+  font-size: 16px;
 }
 
 .logo {
@@ -119,5 +131,8 @@ const handleClick = (fpath: string, spath: string) => {
 }
 .el-menu-vertical-demo {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+ 
 }
 </style>

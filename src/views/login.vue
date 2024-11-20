@@ -1,26 +1,37 @@
 <script setup>
-import { ref } from 'vue'
+import { ref,reactive } from 'vue'
 import { ElMessage } from 'element-plus'
 import {useRouter} from 'vue-router'
+import { userInfo } from '@/utils/auth'
 const router = useRouter()
 // 定义用户名和密码绑定
-const username = ref('')
-const password = ref('')
-const rememberMe = ref(false)
 
-// 登录按钮点击处理函数
+const form = reactive({
+	username: '',
+	password: '',
+	rememberMe: false,
+})
+  
 const handleLogin = () => {
-  if (!username.value || !password.value) {
+  if (!form.username || !form.password) {
     ElMessage.error('请输入用户名和密码')
     return
   }
-  ElMessage.success('登录成功')
-  console.log('用户名:', username.value)
-  console.log('密码:', password.value)
-  console.log('自动登录:', rememberMe.value)
-  router.push("/index")
-  // 在这里添加您的登录逻辑
+
+  // 模拟登录逻辑
+  if (form.username === 'admin' && form.password === '123456') {
+    ElMessage.success('登录成功')
+    console.log('用户名:', form.username)
+    console.log('密码:', form.password)
+    console.log('自动登录:', form.rememberMe)
+    userInfo.isAuthenticated = true
+    router.push('/index') // 跳转到首页
+  } else {
+    ElMessage.error('用户名或密码错误')
+  }
 }
+
+
 </script>
 
 <template>
@@ -33,16 +44,16 @@ const handleLogin = () => {
 
     <!-- 登录表单 -->
     <el-card class="login-form">
-      <el-form :model="{ username, password }" >
+      <el-form :model="form" >
         <!-- 用户名 -->
         <el-form-item>
-          <el-input v-model="username" placeholder="请输入用户名" />
+          <el-input v-model="form.username" placeholder="请输入用户名" />
         </el-form-item>
 
         <!-- 密码 -->
         <el-form-item >
           <el-input
-            v-model="password"
+            v-model="form.password"
             type="password"
             placeholder="请输入密码"
             show-password
@@ -51,7 +62,7 @@ const handleLogin = () => {
 
         <!-- 自动登录 -->
         <el-form-item>
-          <el-checkbox v-model="rememberMe">自动登录</el-checkbox>
+          <el-checkbox v-model="form.rememberMe">自动登录</el-checkbox>
         </el-form-item>
 
         <!-- 登录按钮 -->
