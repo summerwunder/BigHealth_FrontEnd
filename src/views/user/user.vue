@@ -2,8 +2,8 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-19 21:28:13
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-21 14:51:03
- * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/views/user/list.vue
+ * @LastEditTime: 2024-11-21 23:36:57
+ * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/views/user/user.vue
  * @Description:用户列表界面
  * 2405499352@qq.com
 -->
@@ -36,33 +36,33 @@
 
     <!-- 用户表格 -->
     <el-table :data="users" border style="width: 100%">
-      <el-table-column prop="id" label="序号" width="60"></el-table-column>
-      <el-table-column prop="nickname" label="昵称"></el-table-column>
-      <el-table-column prop="realName" label="真实姓名"></el-table-column>
-      <el-table-column prop="gender" label="性别"></el-table-column>
-      <el-table-column prop="birthday" label="生日">
+      <el-table-column prop="id" label="序号" width="60" align="center"></el-table-column>
+      <el-table-column prop="nickname" label="昵称" align="center"></el-table-column>
+      <el-table-column prop="realName" label="真实姓名" align="center"></el-table-column>
+      <el-table-column prop="gender" label="性别" align="center" width="60"></el-table-column>
+      <el-table-column prop="birthday" label="生日" align="center" width="100">
         <template #default="{ row }">
           <span>{{ formatDate(row.birthday) }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="points" label="积分"></el-table-column>
-      <el-table-column prop="isMember" label="会员">
+      <el-table-column prop="points" label="积分" width="70" align="center"></el-table-column>
+      <el-table-column prop="isMember" label="会员" align="center" width="70">
         <template #default="{ row }">
           <span>{{ row.isMember ? '是' : '否' }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="isRecommender" label="是否推荐官">
+      <el-table-column prop="isRecommender" label="是否推荐官" align="center">
         <template #default="{ row }">
           <span>{{ row.isRecommender ? '是' : '否' }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="address" label="地址信息"></el-table-column>
-      <el-table-column prop="updateTime" label="更新时间">
+      <el-table-column prop="address" label="地址信息" align="center" width="200"></el-table-column>
+      <el-table-column prop="updateTime" label="更新时间" align="center">
         <template #default="{ row }">
           <span>{{ formatDate(row.updateTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" fixed="right" width="150">
+      <el-table-column label="操作" fixed="right" width="150" align="center">
         <template #default="{ row }">
           <el-button type="text" @click="handleEdit(row)">编辑</el-button>
           <el-button type="text" @click="handleDetails(row)">查看详情</el-button>
@@ -74,6 +74,7 @@
     <el-pagination
       background
       layout="prev,pager, next, sizes, total"
+      style="margin-top: 20px"
       :current-page="pagination.currentPage"
       :page-size="pagination.pageSize"
       :total="pagination.total"

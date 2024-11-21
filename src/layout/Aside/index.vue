@@ -57,12 +57,9 @@
                 <el-icon><Setting /></el-icon>
                 <span>系统设置</span>
             </template>
-            <el-menu-item index="5-1" @click="handleClick('system', 'roles')">角色权限管理</el-menu-item>
-            <el-menu-item index="5-2" @click="handleClick('system', 'faq')">常见问题</el-menu-item>
-            <el-menu-item index="5-3" @click="handleClick('system', 'about')">关于我们</el-menu-item>
-            <el-menu-item index="5-4" @click="handleClick('system', 'city')">城市管理</el-menu-item>
-            <el-menu-item index="5-5" @click="handleClick('system', 'logs')">日志管理</el-menu-item>
-            <el-menu-item index="5-6" @click="handleClick('system', 'password')">修改密码</el-menu-item>
+            <el-menu-item index="5-1" @click="handleClick('system', 'faq')">常见问题</el-menu-item>
+            <el-menu-item index="5-2" @click="handleClick('system', 'about')">关于我们</el-menu-item>
+            <el-menu-item index="5-3" @click="handleClick('system', 'password')">修改密码</el-menu-item>
         </el-sub-menu>
         </el-menu>
     </div>
