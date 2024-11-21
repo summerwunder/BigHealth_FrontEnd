@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-19 20:28:53
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-21 16:30:51
+ * @LastEditTime: 2024-11-21 22:45:35
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/router/router-table.js
  * @Description: 
  * 2405499352@qq.com
@@ -44,13 +44,14 @@ const router_table=[
                 router_main: () => import('@/views/user/check.vue'),
               },
             },
-            /*
             {
-              path: 'user/store',
+              path: 'mall/product',
               components: {
-                router_main: () => import('@/views/user/store.vue'),
+                router_main: () => import('@/views/mall/product.vue'),
               },
             },
+            /*
+            
             // 商城管理相关路由
             {
               path: 'mall/category',
@@ -64,12 +65,7 @@ const router_table=[
                 router_main: () => import('@/views/mall/project.vue'),
               },
             },
-            {
-              path: 'mall/product',
-              components: {
-                router_main: () => import('@/views/mall/product.vue'),
-              },
-            },
+            
             {
               path: 'mall/flash',
               components: {

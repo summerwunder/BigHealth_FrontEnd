@@ -18,7 +18,6 @@
             </template>
             <el-menu-item index="1-1" @click="handleClick('user', 'user')">用户管理</el-menu-item>
             <el-menu-item index="1-2" @click="handleClick('user', 'check')">体检人管理</el-menu-item>
-            <el-menu-item index="1-3" @click="handleClick('user', 'store')">门店管理</el-menu-item>
         </el-sub-menu>
 
         <!-- 商城管理 -->
@@ -27,11 +26,7 @@
                 <el-icon><ShoppingCart /></el-icon>
                 <span>商城管理</span>
             </template>
-            <el-menu-item index="2-1" @click="handleClick('mall', 'category')">类型管理</el-menu-item>
-            <el-menu-item index="2-2" @click="handleClick('mall', 'project')">项目管理</el-menu-item>
-            <el-menu-item index="2-3" @click="handleClick('mall', 'product')">商品管理</el-menu-item>
-            <el-menu-item index="2-4" @click="handleClick('mall', 'flash')">秒杀管理</el-menu-item>
-            <el-menu-item index="2-5" @click="handleClick('mall', 'healthCard')">健康卡管理</el-menu-item>
+            <el-menu-item index="2-1" @click="handleClick('mall', 'product')">商品管理</el-menu-item>
         </el-sub-menu>
 
         <!-- 订单管理 -->
