@@ -16,8 +16,8 @@
                 <el-icon><User /></el-icon>
                 <span>用户管理</span>
             </template>
-            <el-menu-item index="1-1" @click="handleClick('user', 'list')">用户管理</el-menu-item>
-            <el-menu-item index="1-2" @click="handleClick('user', 'health')">体检人管理</el-menu-item>
+            <el-menu-item index="1-1" @click="handleClick('user', 'user')">用户管理</el-menu-item>
+            <el-menu-item index="1-2" @click="handleClick('user', 'check')">体检人管理</el-menu-item>
             <el-menu-item index="1-3" @click="handleClick('user', 'store')">门店管理</el-menu-item>
         </el-sub-menu>
 
