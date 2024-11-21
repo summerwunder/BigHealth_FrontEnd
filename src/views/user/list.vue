@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-19 21:28:13
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-21 14:37:53
+ * @LastEditTime: 2024-11-21 14:51:03
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/views/user/list.vue
  * @Description:用户列表界面
  * 2405499352@qq.com
@@ -149,6 +149,32 @@
         <el-button type="primary" @click="submitForm">提交</el-button>
       </template>
     </el-dialog>
+
+    <!-- 用户详情弹窗 -->
+    <el-dialog title="用户详情" v-model="infoDialogVisible" width="50%">
+      <el-descriptions border column="3" title="用户信息">
+        <el-descriptions-item label="昵称">{{ userData.nickname }}</el-descriptions-item>
+        <el-descriptions-item label="真实姓名">{{ userData.realName }}</el-descriptions-item>
+        <el-descriptions-item label="性别">{{ userData.gender }}</el-descriptions-item>
+        <el-descriptions-item label="生日">{{ formatDate(userData.birthday) }}</el-descriptions-item>
+        <el-descriptions-item label="手机号">{{ userData.phone }}</el-descriptions-item>
+        <el-descriptions-item label="身份证号">{{ userData.idCard }}</el-descriptions-item>
+        <el-descriptions-item label="地址">{{ userData.address }}</el-descriptions-item>
+        <el-descriptions-item label="是否会员">
+          {{ userData.isMember === 1 ? "是" : "否" }}
+        </el-descriptions-item>
+        <el-descriptions-item label="是否推荐官">
+          {{ userData.isRecommender === 1 ? "是" : "否" }}
+        </el-descriptions-item>
+        <el-descriptions-item label="积分">{{ userData.points }}</el-descriptions-item>
+        <el-descriptions-item label="更新时间">{{ formatDate(userData.updateTime) }}</el-descriptions-item>
+      </el-descriptions>
+
+      <!-- 弹窗底部 -->
+      <template #footer>
+        <el-button @click="infoDialogVisible = false">关闭</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -165,6 +191,8 @@ const isEdit = ref(false);
 
 // 对话框标题
 const dialogTitle = ref("");
+
+const infoDialogVisible=ref(false);
 // 查询的id号
 let ids = 0;
 // 表单数据
@@ -179,7 +207,21 @@ const form = reactive({
   isMember: 0,
   isRecommender: 0,
 });
-
+//用户展示数据
+const userData = reactive({
+  id: 0,
+  nickname: "",
+  realName: "",
+  gender: "",
+  birthday: "",
+  phone: "",
+  idCard: "",
+  address: "",
+  isMember: 0,
+  isRecommender: 0,
+  points: 0,
+  updateTime: "",
+});
 // 表单验证规则
 const rules = {
   nickname: [
@@ -339,7 +381,11 @@ const handleEdit = async (row) => {
 // 查看用户详情
 const handleDetails = (row) => {
   console.log("查看详情：", row);
-  
+  searchUser(row.id).then(res =>{
+    console.log(res.data.data)
+    Object.assign(userData, res.data.data);
+    infoDialogVisible.value = true
+  })
 };
 
 // 页面加载时获取数据
