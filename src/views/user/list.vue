@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-19 21:28:13
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-20 23:28:26
+ * @LastEditTime: 2024-11-21 14:37:53
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/views/user/list.vue
  * @Description:用户列表界面
  * 2405499352@qq.com
@@ -81,14 +81,183 @@
       @current-change="fetchUsers"
       @size-change="handleSizeChange"
     />
+
+     <!-- 新增用户对话框 -->
+     <el-dialog :title="dialogTitle" v-model="dialogVisible" width="40%">
+      <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
+        <!-- 用户姓名 -->
+        <el-form-item label="用户昵称" prop="nickname">
+          <el-input v-model="form.nickname" placeholder="请输入用户昵称" />
+        </el-form-item>
+        <el-form-item label="真实姓名" prop="realName">
+          <el-input v-model="form.realName" placeholder="请输入真实姓名" />
+        </el-form-item>
+
+        <!-- 性别 -->
+        <el-form-item label="性别" prop="gender">
+          <el-select v-model="form.gender" placeholder="请选择">
+            <el-option label="男" value="男" />
+            <el-option label="女" value="女" />
+          </el-select>
+        </el-form-item>
+
+        <!-- 手机号 -->
+        <el-form-item label="手机号" prop="phone">
+          <el-input v-model="form.phone" placeholder="请输入手机号" />
+        </el-form-item>
+
+        <!-- 生日 -->
+        <el-form-item label="生日" prop="birthday">
+          <el-date-picker
+            v-model="form.birthday"
+            type="date"
+            placeholder="请选择生日"
+            style="width: 100%"
+          />
+        </el-form-item>
+
+        <!-- 身份证号 -->
+        <el-form-item label="身份证号" prop="idCard">
+          <el-input v-model="form.idCard" placeholder="请输入身份证号" />
+        </el-form-item>
+
+        <!-- 地址信息 -->
+        <el-form-item label="地址信息" prop="address">
+          <el-input v-model="form.address" placeholder="请输入地址信息" />
+        </el-form-item>
+
+        <!-- 是否会员 -->
+        <el-form-item label="是否会员" prop="isMember">
+          <el-radio-group v-model="form.isMember">
+            <el-radio :label="1">是</el-radio>
+            <el-radio :label="0">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
+
+        <!-- 是否推荐官 -->
+        <el-form-item label="是否推荐官" prop="isRecommender">
+          <el-radio-group v-model="form.isRecommender">
+            <el-radio :label="1">是</el-radio>
+            <el-radio :label="0">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+
+      <!-- 对话框操作按钮 -->
+      <template #footer>
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="submitForm">提交</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
-import request from "@/utils/request";
-import {getUserList} from "@/api/user"
+import { ref ,reactive} from "vue";
+import {getUserList,createUser,searchUser,updateUser} from "@/api/user"
+import { ElMessage } from "element-plus";
 import {formatDate} from '@/utils/convert'
+
+// 对话框可见性
+const dialogVisible = ref(false);
+// 当前操作模式：编辑模式（true）或新增模式（false）
+const isEdit = ref(false);
+
+// 对话框标题
+const dialogTitle = ref("");
+// 查询的id号
+let ids = 0;
+// 表单数据
+const form = reactive({
+  nickname: "",
+  realName:"",
+  gender: "",
+  phone: "",
+  birthday: "",
+  idCard: "",
+  address: "",
+  isMember: 0,
+  isRecommender: 0,
+});
+
+// 表单验证规则
+const rules = {
+  nickname: [
+    { required: true, message: "请输入用户姓名", trigger: "blur" },
+    { min: 2, max: 20, message: "长度在 2 到 20 个字符", trigger: "blur" },
+  ],
+  gender: [{ required: true, message: "请选择性别", trigger: "change" }],
+  phone: [
+    { required: true, message: "请输入手机号", trigger: "blur" },
+    { pattern: /^1[3-9]\d{9}$/, message: "手机号格式不正确", trigger: "blur" },
+  ],
+  birthday: [{ required: true, message: "请选择生日", trigger: "change" }],
+  /*
+  idCard: [
+    { required: true, message: "请输入身份证号", trigger: "blur" },
+    { pattern: /^\d{17}[\d|X|x]$/, message: "身份证号格式不正确", trigger: "blur" },
+  ]，
+  address: [{ required: true, message: "请输入地址信息", trigger: "blur" }],
+  */
+};
+
+
+// 表单引用
+const formRef = ref(null);
+
+// 提交表单
+const submitForm = () => {
+  if (isEdit.value) {
+    // 编辑模式
+    formRef.value.validate((valid) => {
+      if (valid) {
+        form.birthday = form.birthday.toISOString().split("T")[0]
+        updateUser(form,ids).then(()=>{
+          ElMessage.success("用户编辑成功！");
+          dialogVisible.value = false; // 关闭对话框
+          fetchUsers();
+          resetForm();
+        }).catch((error)=>{
+          ElMessage.error("新增用户失败：" + error.message);
+        });
+      }
+  });
+  }else{
+    formRef.value.validate((valid) => {
+      if (valid) {
+        form.birthday = form.birthday.toISOString().split("T")[0]
+        // 发送请求保存用户
+        createUser(form)
+          .then((response) => {
+            ElMessage.success("用户新增成功！");
+            dialogVisible.value = false; // 关闭对话框
+            fetchUsers();
+            resetForm();
+          })
+          .catch((error) => {
+            ElMessage.error("新增用户失败：" + error.message);
+          });
+      } else {
+        ElMessage.error("请完成表单填写！");
+      }
+    });
+  }
+};
+
+// 重置表单
+const resetForm = () => {
+  Object.assign(form, {
+    nickname: "",
+    realName:"",
+    gender: "",
+    phone: "",
+    birthday: "",
+    idCard: "",
+    address: "",
+    isMember: 0,
+    isRecommender: 0,
+  });
+};
 // 搜索表单
 const searchForm = ref({
   username: "",
@@ -145,20 +314,32 @@ const handleSizeChange = (size) => {
 
 // 新增用户
 const handleAddUser = () => {
-  console.log("新增用户");
-  // 打开新增用户对话框（
+  isEdit.value = false;
+  dialogTitle.value = "新增用户";
+  Object.keys(form).
+      forEach((key) => (form[key] = key === "isMember" ||
+       key === "isRecommender" ? 0 : "")); // 清空表单
+  dialogVisible.value = true;
 };
 
 // 编辑用户
-const handleEdit = (row) => {
-  console.log("编辑用户：", row);
-  // 打开编辑用户对话框
+const handleEdit = async (row) => {
+  try {
+    ids = row.id;
+    const response = await searchUser(row.id); // 获取用户信息
+    Object.assign(form, response.data.data); // 填充表单数据
+    isEdit.value = true;
+    dialogTitle.value = "编辑用户信息";
+    dialogVisible.value = true; // 打开对话框
+  } catch (error) {
+    ElMessage.error("获取用户信息失败: " + error.message);
+  }
 };
 
 // 查看用户详情
 const handleDetails = (row) => {
   console.log("查看详情：", row);
-  // 跳转或显示详情页面
+  
 };
 
 // 页面加载时获取数据
@@ -180,5 +361,9 @@ fetchUsers();
 
 .el-table .el-button {
   margin: 0 5px;
+}
+
+.el-form-item {
+  margin-bottom: 20px;
 }
 </style>
