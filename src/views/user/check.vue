@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-19 21:28:13
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-21 16:32:42
+ * @LastEditTime: 2024-11-21 16:51:05
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/views/user/check.vue
  * @Description:体检人管理
  * 2405499352@qq.com
@@ -107,7 +107,8 @@
 
 <script setup>
 import { ref, reactive } from "vue";
-import {getCheckUserList,addCheckUser} from "@/api/checkUser"
+import {getCheckUserList,addCheckUser,deleteCheckUser} from "@/api/checkUser"
+import { ElMessage,ElMessageBox } from "element-plus";
 // 获取用户列表数据
 const fetchUsers = async () => {
   const params = {
@@ -130,7 +131,7 @@ const submitAddForm = () => {
   const formRef = ref(null)
   formRef.value.validate((valid) => {
     if (valid) {
-      addCheckUser(addForm.value)
+      addCheckUser(addForm)
         .then(() => {
           ElMessage.success('新增成功')
           addDialogVisible.value = false
@@ -158,7 +159,7 @@ const filters = ref({
   phone: "",
 });
 const addDialogVisible = ref(false)
-const addForm = ref({
+const addForm = reactive({
   name: '',
   gender: '',
   phone: '',
@@ -183,9 +184,9 @@ const selectedRowKeys = ref([]);
 
 // 重置筛选条件
 const resetFilters = () => {
-  filters.name = "";
-  filters.gender = "";
-  filters.phone = "";
+  filters.value.name = "";
+  filters.value.gender = "";
+  filters.value.phone = "";
   fetchUsers();
 };
 
@@ -222,7 +223,28 @@ const editPerson = (row) => {
 };
 
 const deletePerson = (row) => {
-  console.log("删除体检人", row);
+  ElMessageBox.confirm(
+    `确定要删除体检人 "${row.name}" 吗？`,
+    "提示",
+    {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    })
+    .then(() => {
+      deleteCheckUser(row.id)
+        .then(() => {
+          ElMessage.success("删除成功");
+          fetchUsers(); // 删除成功后刷新用户列表
+        })
+        .catch(() => {
+          ElMessage.error("删除失败");
+        });
+    })
+    .catch(() => {
+      ElMessage.info("已取消删除");
+    });
+
 };
 
 const viewDetails = (row) => {
