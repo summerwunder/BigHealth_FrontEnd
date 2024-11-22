@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-21 22:45:54
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-22 10:10:55
+ * @LastEditTime: 2024-11-22 10:25:39
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/views/mall/product.vue
  * @Description: 
  * 2405499352@qq.com
@@ -148,12 +148,12 @@
   import { ElMessageBox, ElMessage } from "element-plus";
   import { getProductList, deleteProductById ,createProduct
           ,searchProductById,updateProduct} from "@/api/product"; 
-  
+  import { useRoute, useRouter } from "vue-router";
   // 对话框可见性
   const dialogVisible = ref(false);
   const isEdit = ref(false); // 标识是否是编辑模式
   const dialogTitle = ref("");
-  
+  const router = useRouter()
   let ids = 0;
   // 筛选条件
   const filters = ref({
@@ -319,7 +319,7 @@ const resetForm = () => {
   };
   
   const viewDetails = (row) => {
-    console.log("查看详情", row);
+    router.push(`/index/product/details/${row.id}`);
   };
   
   // 初始化

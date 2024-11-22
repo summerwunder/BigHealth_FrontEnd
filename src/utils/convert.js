@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-20 22:36:20
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-21 23:30:40
+ * @LastEditTime: 2024-11-22 10:21:20
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/utils/convert.js
  * @Description: 
  * 2405499352@qq.com
@@ -19,4 +19,8 @@ export const formatDate = (dateString) => {
 export const formatDateTime = (date) => {
   if (!date) return '无';
   return dayjs(date).format('YYYY-MM-DD HH:mm:ss');
+};
+
+export const formatCurrency = (value) => {
+  return `¥${Number(value).toFixed(2)}`;
 };

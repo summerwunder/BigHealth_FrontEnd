@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-19 20:28:53
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-21 22:45:35
+ * @LastEditTime: 2024-11-22 10:19:44
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/router/router-table.js
  * @Description: 
  * 2405499352@qq.com
@@ -50,6 +50,13 @@ const router_table=[
                 router_main: () => import('@/views/mall/product.vue'),
               },
             },
+            {
+              path: 'product/details/:id',
+              props: true,
+              components: {
+                router_main: () => import('@/views/mall/productDetails.vue'),
+              },
+            }
             /*
             
             // 商城管理相关路由
