@@ -35,7 +35,7 @@
                 <el-icon><Document /></el-icon>
                 <span>订单管理</span>
             </template>
-            <el-menu-item index="3-1" @click="handleClick('order', 'list')">订单管理</el-menu-item>
+            <el-menu-item index="3-1" @click="handleClick('order', 'indent')">订单管理</el-menu-item>
             <el-menu-item index="3-2" @click="handleClick('order', 'reservation')">预约管理</el-menu-item>
         </el-sub-menu>
 

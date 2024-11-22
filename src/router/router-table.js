@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-19 20:28:53
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-22 10:19:44
+ * @LastEditTime: 2024-11-22 10:56:54
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/router/router-table.js
  * @Description: 
  * 2405499352@qq.com
@@ -56,40 +56,12 @@ const router_table=[
               components: {
                 router_main: () => import('@/views/mall/productDetails.vue'),
               },
-            }
-            /*
-            
-            // 商城管理相关路由
-            {
-              path: 'mall/category',
-              components: {
-                router_main: () => import('@/views/mall/category.vue'),
-              },
-            },
-            {
-              path: 'mall/project',
-              components: {
-                router_main: () => import('@/views/mall/project.vue'),
-              },
-            },
-            
-            {
-              path: 'mall/flash',
-              components: {
-                router_main: () => import('@/views/mall/flash.vue'),
-              },
-            },
-            {
-              path: 'mall/healthCard',
-              components: {
-                router_main: () => import('@/views/mall/healthCard.vue'),
-              },
-            },
+            },    
             // 订单管理相关路由
             {
-              path: 'order/list',
+              path: 'order/indent',
               components: {
-                router_main: () => import('@/views/order/list.vue'),
+                router_main: () => import('@/views/order/indent.vue'),
               },
             },
             {
@@ -98,6 +70,7 @@ const router_table=[
                 router_main: () => import('@/views/order/reservation.vue'),
               },
             },
+            /*
             // 内容管理相关路由
             {
               path: 'content/banner',

@@ -45,7 +45,7 @@
           <span>{{ formatDate(row.birthday) }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="points" label="积分" width="70" align="center"></el-table-column>
+      <!--<el-table-column prop="points" label="积分" width="70" align="center"></el-table-column>-->
       <el-table-column prop="isMember" label="会员" align="center" width="70">
         <template #default="{ row }">
           <span>{{ row.isMember ? '是' : '否' }}</span>
@@ -167,7 +167,7 @@
         <el-descriptions-item label="是否推荐官">
           {{ userData.isRecommender === 1 ? "是" : "否" }}
         </el-descriptions-item>
-        <el-descriptions-item label="积分">{{ userData.points }}</el-descriptions-item>
+        <!--<el-descriptions-item label="积分">{{ userData.points }}</el-descriptions-item>-->
         <el-descriptions-item label="更新时间">{{ formatDate(userData.updateTime) }}</el-descriptions-item>
       </el-descriptions>
 
@@ -220,7 +220,7 @@ const userData = reactive({
   address: "",
   isMember: 0,
   isRecommender: 0,
-  points: 0,
+  //points: 0,
   updateTime: "",
 });
 // 表单验证规则
