@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-21 22:45:54
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-21 23:30:54
+ * @LastEditTime: 2024-11-22 10:10:55
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/views/mall/product.vue
  * @Description: 
  * 2405499352@qq.com
@@ -37,6 +37,57 @@
         <el-button type="primary" @click="addProduct">新增商品</el-button>
       </div>
   
+      <!-- 新增商品对话框 -->
+    <el-dialog :title="dialogTitle" v-model="dialogVisible" width="40%">
+      <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
+        <!-- 商品名称 -->
+        <el-form-item label="商品名称" prop="name">
+          <el-input v-model="form.name" placeholder="请输入商品名称" />
+        </el-form-item>
+        <!-- 商品类型 -->
+        <el-form-item label="商品类型" prop="type">
+          <el-radio-group v-model="form.type">
+            <el-radio label="体检">体检</el-radio>
+            <el-radio label="健康">健康</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <!-- 商品价格 -->
+        <el-form-item label="商品价格" prop="price">
+          <el-input v-model="form.price" placeholder="请输入商品价格" />
+        </el-form-item>
+        <el-form-item label="商品描述" prop="description">
+          <el-input v-model="form.description" placeholder="请输入商品描述" />
+        </el-form-item>
+        <el-form-item label="商品简介" prop="details">
+          <el-input v-model="form.details" 
+          placeholder="请输入商品介绍" 
+          type="textarea" 
+          rows="5"
+          />
+        </el-form-item>
+
+        <!-- 是否上架 -->
+        <el-form-item label="是否上架" prop="isListed">
+          <el-radio-group v-model="form.isListed">
+            <el-radio :label="1">是</el-radio>
+            <el-radio :label="0">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <!-- 是否推荐 -->
+        <el-form-item label="是否推荐" prop="isRecommended">
+          <el-radio-group v-model="form.isRecommended">
+            <el-radio :label="1">是</el-radio>
+            <el-radio :label="0">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+
+      <!-- 对话框操作按钮 -->
+      <template #footer>
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="submitForm">提交</el-button>
+      </template>
+    </el-dialog>
       <!-- 数据表格 -->
       <el-table
         :data="products"
@@ -92,11 +143,18 @@
   </template>
   
   <script setup>
-  import { ref } from "vue";
+  import { ref ,reactive} from "vue";
   import {formatDate,formatDateTime} from "@/utils/convert"
   import { ElMessageBox, ElMessage } from "element-plus";
-  import { getProductList, deleteProductById } from "@/api/product"; 
+  import { getProductList, deleteProductById ,createProduct
+          ,searchProductById,updateProduct} from "@/api/product"; 
   
+  // 对话框可见性
+  const dialogVisible = ref(false);
+  const isEdit = ref(false); // 标识是否是编辑模式
+  const dialogTitle = ref("");
+  
+  let ids = 0;
   // 筛选条件
   const filters = ref({
     productName: "",
@@ -104,6 +162,24 @@
     isListed: "",
   });
   
+  // 表单数据
+  const form = reactive({
+    name: "",
+    type: "",
+    description:"",
+    details:"",
+    price: 0,
+    isListed: 0,
+    isRecommended: 0,
+  });
+  // 表单验证规则
+  const rules = {
+    name: [{ required: true, message: "请输入商品名称", trigger: "blur" }],
+    type: [{ required: true, message: "请输入商品类型", trigger: "blur" }],
+    price: [
+      { required: true, message: "请输入商品价格", trigger: "blur" },
+    ],
+  };
   // 数据列表
   const products = ref([]);
   const loading = ref(false);
@@ -115,6 +191,41 @@
     total: 0,
   });
   
+  const formRef = ref(null);
+const submitForm = () => {
+  formRef.value.validate((valid) => {
+    if (valid) {
+      if (isEdit.value) {
+        let formExt =reactive({
+          id:ids,
+          ...form
+        })
+        // 编辑逻辑
+        updateProduct(formExt).then(()=>{
+          ElMessage.success("商品编辑成功！");
+          dialogVisible.value = false;
+          fetchProducts();
+        })
+        .catch((error) => {
+            ElMessage.error("新增失败：" + error.message);
+          });
+      } else {
+        // 新增逻辑
+        createProduct(form)
+          .then(() => {
+            ElMessage.success("商品新增成功！");
+            dialogVisible.value = false;
+            fetchProducts();
+          })
+          .catch((error) => {
+            ElMessage.error("新增失败：" + error.message);
+          });
+      }
+    } else {
+      ElMessage.error("请完成表单填写！");
+    }
+  });
+};
   // 获取商品列表
   const fetchProducts = async () => {
     const params = {
@@ -153,13 +264,34 @@
     fetchProducts();
   };
   
+
+  // 重置表单
+const resetForm = () => {
+  Object.assign(form, {
+    name: "",
+    type: "",
+    price: null,
+    isListed: 0,
+    isRecommended: 0,
+  });
+};
   // 操作事件
   const addProduct = () => {
-    console.log("新增商品");
+    resetForm();
+    isEdit.value = false;
+    dialogTitle.value = "新增商品";
+    dialogVisible.value = true;
   };
   
   const editProduct = (row) => {
-    console.log("编辑商品", row);
+    searchProductById(row.id).then(res=>{
+        Object.assign(form,res.data.data)
+    })
+    ids = row.id;
+    isEdit.value = true;
+    dialogTitle.value = "编辑商品";
+    dialogVisible.value = true;
+    
   };
   
   const deleteProduct = (row) => {

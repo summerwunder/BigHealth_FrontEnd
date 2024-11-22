@@ -122,6 +122,10 @@ const handleLogin = () => {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 
 }
+.login-form .el-input{
+  height:45px;
+  font-size:medium;
+}
 .login-form .el-form-item {
   margin-bottom: 22px; /* 设置每个表单项之间的间隔 */
 }
