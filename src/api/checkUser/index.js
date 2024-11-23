@@ -38,3 +38,9 @@ export const updateCheckUser = (data,idx) => {
 export const fetchDetailsById = (id) => {
     return request.get(`/checkUser/details/${id}`);
   };
+
+export const getUserIdByCheckUser = (id)=>{
+    return request.get('/checkUser/userId',{
+        params:{id:id} 
+    });
+}

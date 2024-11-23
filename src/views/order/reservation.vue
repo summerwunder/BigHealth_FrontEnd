@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-22 10:56:39
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-23 14:04:26
+ * @LastEditTime: 2024-11-23 19:07:33
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/views/order/reservation.vue
  * @Description: 
  * 2405499352@qq.com
@@ -45,7 +45,7 @@
     <div class="actions">
       <el-button type="primary" @click="exportReservations">批量导出</el-button>
       <el-button type="primary" @click="openDialog('add')"
-        >新增预约人</el-button
+        >新增体检记录</el-button
       >
     </div>
 
@@ -324,8 +324,6 @@ const deleteRecord = async (row) => {
         type: "warning",
       }
     );
-
-    // Call the delete API
     await deleteReservation(row.id);
     ElMessage.success("删除成功");
 

@@ -1,3 +1,12 @@
+/*
+ * @Author: wangmr mingrui@whut.edu.cn
+ * @Date: 2024-11-23 09:29:27
+ * @LastEditors: wangmr mingrui@whut.edu.cn
+ * @LastEditTime: 2024-11-23 19:34:30
+ * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/api/reservation/index.js
+ * @Description: 
+ * 2405499352@qq.com
+ */
 import request from '@/utils/request'
 
 export const fetchReservationList=(data)=>{
@@ -12,7 +21,7 @@ export const confirmArr = (id) => {
     });
 };
 
-export const addReservation=(data)=>{
+export const createRecord=(data)=>{
     return request.post('/record/add',data
 )}
 
