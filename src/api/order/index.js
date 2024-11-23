@@ -20,3 +20,9 @@ export const approveRefundRequest=(id)=>{
         params: {id:id}
     })
 }
+
+export const getUnusedProducts=(id)=>{
+    return request.get('/orderDetail/unusedProducts',{
+        params: {id:id}
+    })
+}

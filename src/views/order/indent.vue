@@ -124,9 +124,6 @@ const resetFilters = () => {
   fetchOrders();
 };
 
-const exportOrders = async () => {
-
-};
 
 const handleSelectionChange = (selection) => {
   console.log("选中订单", selection);
@@ -168,7 +165,7 @@ const approveRefund = async (row) => {
     ElMessage.error("退款失败");
   }
 };
-const exportOrderList = (data) => {
+const exportOrders = () => {
     if (orders.value.length === 0) {
       ElMessage.warning("没有数据可导出");
       return;
