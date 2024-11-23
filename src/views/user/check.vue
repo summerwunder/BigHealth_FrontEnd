@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-19 21:28:13
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-21 22:23:38
+ * @LastEditTime: 2024-11-23 17:06:30
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/views/user/check.vue
  * @Description:体检人管理
  * 2405499352@qq.com
@@ -28,11 +28,6 @@
         <el-button @click="resetFilters">重置</el-button>
       </el-form-item>
     </el-form>
-
-    <!-- 操作按钮 -->
-    <div class="actions">
-      <el-button type="primary" @click="addPerson">新增体检人</el-button>
-    </div>
 
     <!-- 数据表格 -->
     <el-table
@@ -101,18 +96,54 @@
         @current-change="handleCurrentChange"
       />
     </div>
+
+    <el-dialog title="检查人详情" v-model="detailsDialogVisible" width="60%">
+  <el-descriptions border column="2">
+    <el-descriptions-item label="用户姓名">{{ detailsData.name }}</el-descriptions-item>
+    <el-descriptions-item label="性别">{{ detailsData.gender }}</el-descriptions-item>
+    <el-descriptions-item label="手机号">{{ detailsData.phone }}</el-descriptions-item>
+    <el-descriptions-item label="身份证号">{{ detailsData.idCard }}</el-descriptions-item>
+    <el-descriptions-item label="地址信息">{{ detailsData.address }}</el-descriptions-item>
+  </el-descriptions>
+
+  <el-table :data="detailsData.records" border style="margin-top: 20px">
+    <el-table-column prop="productName" label="检测套餐" align="center" />
+    <el-table-column prop="checkItem" label="体检项目" align="center" />
+    <el-table-column prop="store" label="体检门店" align="center" />
+    <el-table-column prop="time" label="体检时间" align="center" >
+      <template #default="{ row }">
+        {{ formatDateTime(row.time) }}
+      </template>
+    </el-table-column>
+  </el-table>
+
+  <div style="margin-top: 20px; text-align: right">
+    总计次数: {{ totalCount }}
+  </div>
+
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="detailsDialogVisible = false">取消</el-button>
+    <el-button type="primary" @click="detailsDialogVisible = false">确定</el-button>
+  </span>
+</el-dialog>
+
   </div>
 </template>
 
 <script setup>
 import { ref, reactive } from "vue";
-import { getCheckUserList, addCheckUser, updateCheckUser, deleteCheckUser ,searchCheckUser} from "@/api/checkUser";
+import { formatDateTime } from "@/utils/convert";
+import { getCheckUserList, addCheckUser, updateCheckUser, deleteCheckUser ,searchCheckUser,fetchDetailsById} from "@/api/checkUser";
 import { ElMessage, ElMessageBox } from "element-plus";
 
 // 表单相关
 const dialogVisible = ref(false);
 const dialogTitle = ref("新增体检人");
 const isEdit = ref(false);
+const detailsDialogVisible = ref(false);
+const detailsData = ref({});
+const totalCount = ref(0);
+
 const form = reactive({
   id: null,
   name: "",
@@ -177,13 +208,16 @@ const handleCurrentChange = (current) => {
   fetchUsers();
 };
 
+
+
 // 新增体检人
-const addPerson = () => {
-  dialogTitle.value = "新增体检人";
+/* const addPerson = () => {
+//  dialogTitle.value = "新增体检人";
   Object.assign(form, { id: null, name: "", gender: "", phone: "", idCard: "", address: "" });
   dialogVisible.value = true;
   isEdit.value = false;
-};
+}; 
+*/
 
 // 编辑体检人
 const editPerson = (row) => {
@@ -240,6 +274,27 @@ const deletePerson = (row) => {
     .catch(() => {
       ElMessage.info("已取消删除");
     });
+};
+
+const viewDetails = async (row) => {
+  try {
+    const response = await fetchDetailsById(row.id); // API call to get details by ID
+    const { userInfo, details, total } = response.data.data;
+
+    detailsData.value = {
+      name: userInfo.name,
+      gender: userInfo.gender,
+      phone: userInfo.phone,
+      idCard: userInfo.idCard,
+      address: userInfo.address,
+      records: details,
+    };
+    totalCount.value = total;
+
+    detailsDialogVisible.value = true; // Show the dialog
+  } catch (error) {
+    ElMessage.error("获取检查人详情失败，请重试");
+  }
 };
 
 // 初始化

@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-19 21:28:13
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-22 09:42:53
+ * @LastEditTime: 2024-11-23 16:43:58
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/views/user/user.vue
  * @Description:用户列表界面
  * 2405499352@qq.com
@@ -65,6 +65,7 @@
       <el-table-column label="操作" fixed="right" width="150" align="center">
         <template #default="{ row }">
           <el-button type="text" @click="handleEdit(row)">编辑</el-button>
+          <el-button type="text" style="color:green" @click="handleAdd(row)">新增体检人</el-button>
           <el-button type="text" @click="handleDetails(row)">查看详情</el-button>
         </template>
       </el-table-column>
@@ -85,7 +86,7 @@
 
      <!-- 新增用户对话框 -->
      <el-dialog :title="dialogTitle" v-model="dialogVisible" width="40%">
-      <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
+      <el-form :model="form" :rules="rules" ref="formAddRef" label-width="100px">
         <!-- 用户姓名 -->
         <el-form-item label="用户昵称" prop="nickname">
           <el-input v-model="form.nickname" placeholder="请输入用户昵称" />
@@ -176,12 +177,43 @@
         <el-button @click="infoDialogVisible = false">关闭</el-button>
       </template>
     </el-dialog>
+
+    <el-dialog v-model="addDialogVisible" title="新增体检人" width="40%">
+      <el-form ref="formRef" :model="addForm" :rules="addRules" label-width="100px">
+        <el-form-item label="姓名：" prop="name">
+          <el-input v-model="addForm.name" placeholder="请输入姓名"></el-input>
+        </el-form-item>
+        <el-form-item label="性别：" prop="gender">
+          <el-select v-model="addForm.gender" placeholder="请选择性别">
+            <el-option label="男" value="男"></el-option>
+            <el-option label="女" value="女"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="手机号：" prop="phone">
+          <el-input v-model="addForm.phone" placeholder="请输入手机号"></el-input>
+        </el-form-item>
+        <el-form-item label="身份证号：" prop="idCard">
+          <el-input v-model="addForm.idCard" placeholder="请输入身份证号"></el-input>
+        </el-form-item>
+        <el-form-item   label="地址信息：" prop="address" >
+          <el-input v-model="addForm.address" placeholder="请输入地址信息"></el-input>
+        </el-form-item>
+      </el-form>
+
+      <!-- Dialog 底部按钮 -->
+      <div slot="footer">
+        <el-button @click="addDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="submitAddForm">提交</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script setup>
 import { ref ,reactive} from "vue";
 import {getUserList,createUser,searchUser,updateUser} from "@/api/user"
+import {addCheckUser} from "@/api/checkUser"
 import { ElMessage } from "element-plus";
 import {formatDate} from '@/utils/convert'
 
@@ -190,9 +222,10 @@ const dialogVisible = ref(false);
 // 当前操作模式：编辑模式（true）或新增模式（false）
 const isEdit = ref(false);
 
+const addDialogVisible = ref(false);
 // 对话框标题
 const dialogTitle = ref("");
-
+const formAddRef = ref(null);
 const infoDialogVisible=ref(false);
 // 查询的id号
 let ids = 0;
@@ -319,6 +352,58 @@ const pagination = ref({
 });
 
 
+const addForm = reactive({
+  name: "",
+  gender: "",
+  phone: "",
+  idCard: "",
+  address: "",
+});
+const addRules = {
+  name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+  gender: [{ required: true, message: "请选择性别", trigger: "change" }],
+  phone: [
+    { required: true, message: "请输入手机号", trigger: "blur" },
+    { pattern: /^1[3-9]\d{9}$/, message: "手机号格式不正确", trigger: "blur" },
+  ],
+  idCard: [
+    { required: true, message: "请输入身份证号", trigger: "blur" },
+    { pattern: /^\d{17}[\dX]$/, message: "身份证号格式不正确", trigger: "blur" },
+  ],
+};
+
+
+// 重置表单
+const resetAddForm = () => {
+  Object.assign(addForm, {
+    name: "",
+    gender: "",
+    phone: "",
+    idCard: "",
+    address: "",
+  });
+};
+let  idx = 0;
+const handleAdd = (row)=>{
+  addDialogVisible.value = true;
+  idx = row.id;
+}
+
+// 提交表单
+const submitAddForm = () => {
+  formRef.value.validate(async (valid) => {
+    if (valid) {
+      try {
+        await addCheckUser(addForm,idx); // 调用 API 提交表单数据
+        ElMessage.success("新增体检人成功！");
+        addDialogVisible.value = false; // 关闭弹窗
+        resetAddForm(); // 重置表单
+      } catch (error) {
+        ElMessage.error(`新增体检人失败：${error.message}`);
+      }
+    }
+  });
+};
 // 获取用户列表数据
 const fetchUsers = async (page = 1) => {
   pagination.value.currentPage = page;

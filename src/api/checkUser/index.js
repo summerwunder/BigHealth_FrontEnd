@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-21 15:21:16
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-21 22:12:26
+ * @LastEditTime: 2024-11-23 17:05:01
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/api/checkUser/index.js
  * @Description: 
  * 2405499352@qq.com
@@ -14,8 +14,8 @@ export const getCheckUserList=(data)=>{
     }
 )}
 
-export const addCheckUser = (data) => {
-    return request.post('/checkUser/add', data)
+export const addCheckUser = (data,id) => {
+    return request.post(`/checkUser/add/${id}`, data)
 }
 
 export const searchCheckUser = (data) => {
@@ -34,3 +34,7 @@ export const updateCheckUser = (data,idx) => {
         params:{id:idx}
     })
 }
+
+export const fetchDetailsById = (id) => {
+    return request.get(`/checkUser/details/${id}`);
+  };
