@@ -125,12 +125,7 @@ const resetFilters = () => {
 };
 
 const exportOrders = async () => {
-  try {
-    await exportOrderList(filters);
-    ElMessage.success("导出成功");
-  } catch (error) {
-    ElMessage.error("导出失败");
-  }
+
 };
 
 const handleSelectionChange = (selection) => {

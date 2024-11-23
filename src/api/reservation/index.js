@@ -5,3 +5,9 @@ export const fetchReservationList=(data)=>{
         params: data
     }
 )}
+
+export const confirmArrival=(id)=>{
+    return request.get('/record/arrival',{ 
+        params: id
+    }
+)}

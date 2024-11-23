@@ -3,7 +3,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-22 10:56:39
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-23 10:03:01
+ * @LastEditTime: 2024-11-23 10:23:09
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/views/order/reservation.vue
  * @Description: 
  * 2405499352@qq.com
@@ -84,12 +84,47 @@
         </el-table-column>
         <el-table-column label="操作" fixed="right" width="150" align="center">
           <template #default="{ row }">
-            <el-button type="text" @click="editReservation(row)">编辑</el-button>
-            <el-button type="text" @click="viewDetails(row)">查看详情</el-button>
+            <el-button type="text"  @click="editReservation(row)">编辑</el-button>
+            <el-button type="text" style="color:chocolate" @click="viewDetails(row)">查看详情</el-button>
           </template>
         </el-table-column>
       </el-table>
   
+      <el-dialog
+      title="预约详情"
+      v-model="detailsDialogVisible"
+      width="50%"
+    >
+      <el-descriptions border column="2" >
+        <el-descriptions-item label="体检人姓名">
+          {{ detailsData.name }}
+        </el-descriptions-item>
+        <el-descriptions-item label="体检人手机号">
+          {{ detailsData.phone }}
+        </el-descriptions-item>
+        <el-descriptions-item label="身份证号">
+          {{ detailsData.idCard }}
+        </el-descriptions-item>
+        <el-descriptions-item label="预约时间">
+          {{ formatDateTime(detailsData.appointmentTime) }}
+        </el-descriptions-item>
+        <el-descriptions-item label="预约商品">
+          {{ detailsData.productName }}
+        </el-descriptions-item>
+        <el-descriptions-item label="预约门店">
+          {{ detailsData.store }}
+        </el-descriptions-item>
+        <el-descriptions-item label="申请时间">
+          {{ formatDateTime(detailsData.createTime) }}
+        </el-descriptions-item>
+        <el-descriptions-item label="是否到店">
+          {{ detailsData.status }}
+        </el-descriptions-item>
+      </el-descriptions>
+      <span slot="footer">
+        <el-button @click="detailsDialogVisible = false" style="margin-top:20px">返回</el-button>
+      </span>
+    </el-dialog>
       <!-- 分页器 -->
       <el-pagination
         background
@@ -108,7 +143,12 @@
   import { ref, reactive } from "vue";
   import { fetchReservationList} from "@/api/reservation";
   import { ElMessage } from "element-plus";
+  import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
   import { formatDateTime} from "@/utils/convert"
+
+  const detailsDialogVisible = ref(false);
+  const detailsData = ref({});
    // 筛选条件
   const filters = reactive({
     name: "",
@@ -160,16 +200,48 @@
   
   // 导出预约记录
   const exportReservations = async () => {
-    try {
-      ElMessage.success("导出成功");
-    } catch (error) {
-      ElMessage.error("导出失败");
-    }
+    if (reservations.value.length === 0) {
+    ElMessage.warning("没有数据可导出");
+    return;
+  }
+
+  // 格式化导出数据
+  const exportData = reservations.value.map((record, index) => ({
+    序号: index + 1,
+    姓名: record.name,
+    手机号: record.phone,
+    身份证号: record.idCard,
+    预约时间: formatDateTime(record.appointmentTime),
+    商品名称: record.productName,
+    预约状态: record.status,
+    申请时间: formatDateTime(record.createTime),
+  }));
+
+  // 创建 Excel 表格
+  const worksheet = XLSX.utils.json_to_sheet(exportData); // 转换为工作表
+  const workbook = XLSX.utils.book_new(); // 创建新工作簿
+  XLSX.utils.book_append_sheet(workbook, worksheet, "预约记录数据"); // 将工作表添加到工作簿
+
+  // 生成 Excel 文件 Blob
+  const excelBuffer = XLSX.write(workbook, {
+    bookType: "xlsx",
+    type: "array",
+  });
+  const blob = new Blob([excelBuffer], {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  });
+
+  // 下载 Excel 文件
+  saveAs(blob, `预约记录_${new Date().toISOString().slice(0, 10)}.xlsx`);
+
+  ElMessage.success("预约记录数据已成功导出");
   };
   
   // 确认到店
   const confirmArrival = (row) => {
+    
     ElMessage.success(`已确认 ${row.name} 到店`);
+    
   };
   
   // 编辑预约
@@ -179,7 +251,19 @@
   
   // 查看预约详情
   const viewDetails = (row) => {
-    console.log("查看预约详情", row);
+    
+    detailsData.value = {
+        name: row.name,
+        phone: row.phone,
+        idCard: row.idCard,
+        appointmentTime: row.appointmentTime,
+        productName: row.productName,
+        store:  "美年武昌分院", 
+        createTime: row.createTime,
+        status: row.status,
+    };
+
+    detailsDialogVisible.value = true; // 打开弹窗
   };
   
   // 分页事件
