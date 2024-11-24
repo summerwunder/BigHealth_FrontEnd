@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-19 21:28:13
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-23 16:43:58
+ * @LastEditTime: 2024-11-23 19:57:24
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/views/user/user.vue
  * @Description:用户列表界面
  * 2405499352@qq.com
@@ -62,7 +62,7 @@
           <span>{{ formatDate(row.updateTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" fixed="right" width="150" align="center">
+      <el-table-column label="操作" fixed="right" width="240" align="center">
         <template #default="{ row }">
           <el-button type="text" @click="handleEdit(row)">编辑</el-button>
           <el-button type="text" style="color:green" @click="handleAdd(row)">新增体检人</el-button>

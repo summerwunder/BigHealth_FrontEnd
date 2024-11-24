@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-19 20:28:53
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-22 10:56:54
+ * @LastEditTime: 2024-11-23 20:25:17
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/router/router-table.js
  * @Description: 
  * 2405499352@qq.com
@@ -70,6 +70,24 @@ const router_table=[
                 router_main: () => import('@/views/order/reservation.vue'),
               },
             },
+            {
+              path: 'system/password',
+              components: {
+                router_main: () => import('@/views/system/password.vue'),
+              },
+            },
+            {
+              path: 'content/bannerAdd',
+              components: {
+                router_main: () => import('@/views/content/bannerAdd.vue'),
+              },
+            },
+            {
+              path: 'content/banner',
+              components: {
+                router_main: () => import('@/views/content/banner.vue'),
+              },
+            },
             /*
             // 内容管理相关路由
             {
@@ -127,12 +145,7 @@ const router_table=[
                 router_main: () => import('@/views/system/logs.vue'),
               },
             },
-            {
-              path: 'system/password',
-              components: {
-                router_main: () => import('@/views/system/password.vue'),
-              },
-            },
+            
             */
       ]
     },

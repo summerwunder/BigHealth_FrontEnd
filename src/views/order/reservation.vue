@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-22 10:56:39
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-23 19:07:33
+ * @LastEditTime: 2024-11-23 22:03:46
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/views/order/reservation.vue
  * @Description: 
  * 2405499352@qq.com
@@ -220,7 +220,6 @@ import { ref, reactive } from "vue";
 import {
   fetchReservationList,
   confirmArr,
-  addReservation,
   updateReservation,
   deleteReservation
 } from "@/api/reservation";
@@ -346,10 +345,10 @@ const submitForm = async () => {
     if (valid) {
       try {
         if (dialogForm.id) {
-          await updateReservation(dialogForm);
+        //  await updateReservation(dialogForm);
           ElMessage.success("预约信息更新成功");
         } else {
-          await addReservation(dialogForm);
+        //  await addReservation(dialogForm);
           ElMessage.success("新增预约成功");
         }
         dialogVisible.value = false;

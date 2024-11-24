@@ -18,18 +18,15 @@ const handleLogin = () => {
     return
   }
 
-  // 模拟登录逻辑
-  if (form.username === 'admin' && form.password === '123456') {
-    ElMessage.success('登录成功')
-    console.log('用户名:', form.username)
-    console.log('密码:', form.password)
-    console.log('自动登录:', form.rememberMe)
-    userInfo.isAuthenticated = true
-    router.push('/index') // 跳转到首页
+  const savedPassword = localStorage.getItem("password") ||"wmr666"; // 默认初始密码
+  if (form.username === "admin" && form.password === savedPassword) {
+    ElMessage.success("登录成功");
+    userInfo.isAuthenticated = true;
+    router.push("/index"); // 跳转到首页
   } else {
-    ElMessage.error('用户名或密码错误')
+    ElMessage.error("用户名或密码错误");
   }
-}
+};
 
 
 </script>
