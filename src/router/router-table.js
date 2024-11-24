@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-19 20:28:53
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-23 20:25:17
+ * @LastEditTime: 2024-11-24 09:49:47
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/router/router-table.js
  * @Description: 
  * 2405499352@qq.com
@@ -77,9 +77,10 @@ const router_table=[
               },
             },
             {
-              path: 'content/bannerAdd',
+              path: "content/banner/:id",
+              name: "BannerDetails",
               components: {
-                router_main: () => import('@/views/content/bannerAdd.vue'),
+                router_main: () => import('@/views/content/bannerDetails.vue'),
               },
             },
             {

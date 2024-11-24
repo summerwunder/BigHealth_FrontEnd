@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-23 20:21:34
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-24 09:38:00
+ * @LastEditTime: 2024-11-24 09:50:43
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/views/content/banner.vue
  * @Description: 
  * 2405499352@qq.com
@@ -48,7 +48,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center" fixed="right" width="150">
           <template #default="{ row }">
-            <el-button type="text" @click="console.log(5)">查看详情</el-button>
+            <el-button type="text" @click="viewDetails(row)">查看详情</el-button>
             <el-button type="text" style="color: red;" @click="deleteBanner(row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -117,7 +117,9 @@
   import { ElMessage } from "element-plus";
   import {formatDateTime} from "@/utils/convert"
   import { fetchBanners, deleteBannerById, addBanner } from "@/api/content";
+  import { useRouter } from "vue-router";
   
+  const router = useRouter();
   const filters = reactive({
     position: "",
   });
@@ -167,7 +169,14 @@
       loading.value = false;
     }
   };
-  
+
+    const viewDetails = (row) => {
+    router.push({
+        name: "BannerDetails",
+        params: { id: row.id }, // 将轮播图的ID传递给详情页
+    });
+    };
+    
   const handleImageSuccess = (response) => {
     if (response.status === "success") {
       formData.image = response.url;
