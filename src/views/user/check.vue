@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-19 21:28:13
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-23 19:49:32
+ * @LastEditTime: 2024-11-24 10:23:03
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/views/user/check.vue
  * @Description:体检人管理
  * 2405499352@qq.com
@@ -276,8 +276,7 @@ const submitRecord = async () => {
 function resetAddRecordForm(){
   selectedCheckUserId.value = null,
   selectedProduct.value = null,
-  appointmentTime.value = null,
-
+  appointmentTime.value = null
 }
 // 提交表单
 const submitForm = () => {

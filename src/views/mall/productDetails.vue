@@ -2,7 +2,7 @@
  * @Author: wangmr mingrui@whut.edu.cn
  * @Date: 2024-11-22 10:15:18
  * @LastEditors: wangmr mingrui@whut.edu.cn
- * @LastEditTime: 2024-11-22 10:27:36
+ * @LastEditTime: 2024-11-24 10:20:31
  * @FilePath: /BigHealth/BigHealthMarket_FrontEnd/src/views/mall/productDetails.vue
  * @Description: 
  * 2405499352@qq.com
@@ -19,6 +19,7 @@
           <el-descriptions-item label="是否推荐">{{ product.isRecommended ? "是" : "否" }}</el-descriptions-item>
           <el-descriptions-item label="更新时间">{{ formatDateTime(product.updateTime) }}</el-descriptions-item>
           <el-descriptions-item label="商品描述">{{ product.description }}</el-descriptions-item>
+          <el-descriptions-item label=""></el-descriptions-item>
           <el-descriptions-item label="商品介绍">
             <div v-html="product.details"></div>
           </el-descriptions-item>
